@@ -32,6 +32,7 @@ async function run(){
       const usersCollection = database.collection('users');
       const homeBikeCollection = database.collection('homeBikes');
       const exploreBikeCollection = database.collection('exploreBikes');
+      const reviewCollection = database.collection('reviews');
 
       // POST FOR HOME BIKES
       app.post('/homeBikes', async(req, res) => {
@@ -46,6 +47,21 @@ async function run(){
         const cursor = homeBikeCollection.find({});
         const bikes = await cursor.toArray();
         res.send(bikes);
+      })
+
+      // POST FOR REVIEW
+      app.post('/reviews', async(req, res) => {
+        const review = req.body;
+        const result = await reviewCollection.insertOne(review);
+        console.log('review added ', result);
+        res.json(result);
+      })
+
+      // GET FOR REVIEW
+      app.get('/reviews', async(req, res) => {
+        const cursor = reviewCollection.find({});
+        const result = await cursor.toArray();
+        res.send(result);
       })
 
       // POST FOR EXPLORE BIKES
