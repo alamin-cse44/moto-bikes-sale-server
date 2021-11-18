@@ -118,6 +118,24 @@ async function run(){
          res.json(result);
       })
 
+      // GET  FOR BOOKING SINGLE PRODUCT ***
+      app.get('/bookings/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: ObjectId(id)};
+        const result = await bookingCollection.findOne(query);
+        console.log('deleting bike ', result);
+        res.json(result);
+      })
+
+      // DELETE  FOR BOOKING SINGLE PRODUCT ***
+      app.delete('/bookings/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: ObjectId(id)};
+        const result = await bookingCollection.deleteOne(query);
+        console.log('deleting bike ', result);
+        res.json(result);
+      })
+
       // POST USERS IN DATABASE
       app.post('/users', async(req, res)=>{
         const user = req.body;
