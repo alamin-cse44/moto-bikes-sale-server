@@ -34,6 +34,7 @@ async function run(){
       const exploreBikeCollection = database.collection('exploreBikes');
       const reviewCollection = database.collection('reviews');
 
+      // ---------------------  Home Bikes START  ------------------
       // POST FOR HOME BIKES
       app.post('/homeBikes', async(req, res) => {
         const newBike = req.body;
@@ -49,6 +50,10 @@ async function run(){
         res.send(bikes);
       })
 
+      // --------------  Home BIKES END ------------------------------------
+
+      // ------------------- REVIEW START -------------------------------
+
       // POST FOR REVIEW
       app.post('/reviews', async(req, res) => {
         const review = req.body;
@@ -63,6 +68,10 @@ async function run(){
         const result = await cursor.toArray();
         res.send(result);
       })
+
+      // ------------------------- REVIEW END ------------------------------
+
+      // -------------------    START EXPLORE ------------------------------
 
       // POST FOR EXPLORE BIKES
       app.post('/exploreBikes', async(req, res) => {
@@ -115,7 +124,11 @@ async function run(){
         res.json(result);
       })
 
-      // GET FOR BOOKING PRODUCT
+      // -----------------------  END EXPLORE ------------------------------------
+
+      // ------------------------- START BOOKING ---------------------------------
+
+      // GET FOR BOOKING PRODUCT with specific email and date
       app.get('/bookings', async(req, res) => {
         const email = req.query.email;
         const date = new Date(req.query.date).toLocaleDateString();
@@ -124,6 +137,22 @@ async function run(){
         const cursor = bookingCollection.find(query);
         const bookings = await cursor.toArray();
         res.json(bookings);
+      })
+
+      // GET FOR BOOKING PRODUCT
+      app.get('/allbookings', async(req, res) => {
+        const cursor = bookingCollection.find({});
+        const bikes = await cursor.toArray();
+        res.send(bikes);
+      })
+
+      // DELETE FOR BOOKINGS BIKES
+      app.delete('/allbookings/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: ObjectId(id)};
+        const result = await bookingCollection.deleteOne(query);
+        console.log('deleting bike ', result);
+        res.json(result);
       })
 
       // POST FOR BOOKINGS PRODUCT
@@ -151,6 +180,10 @@ async function run(){
         console.log('deleting bike ', result);
         res.json(result);
       })
+
+      // ----------------------- END BOOKINGS ---------------------------
+
+      // ---------------------- START USER -------------------------------
 
       // POST USERS IN DATABASE
       app.post('/users', async(req, res)=>{
@@ -190,7 +223,8 @@ async function run(){
         }
         res.json({admin: isAdmin});
       })
-
+    
+      // ------------------- END USER --------------------------
 
 
     }
